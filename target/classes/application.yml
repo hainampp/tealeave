@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://203.162.10.118:5000/tealeaves?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/tealeaves?useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    password: Ptit@321
+    password: hainam
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

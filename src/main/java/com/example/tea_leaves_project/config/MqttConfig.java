@@ -63,6 +63,13 @@ public class MqttConfig {
         options.setServerURIs(new String[]{"ssl://7e44c054e3384872bc6b019a4185eb18.s1.eu.hivemq.cloud:8883"});
         options.setUserName("iec-local");
         options.setPassword("Aa12345678".toCharArray());
+        // Cấu hình tự động kết nối lại
+        options.setAutomaticReconnect(true);
+        options.setCleanSession(false);
+        options.setConnectionTimeout(30);
+        options.setKeepAliveInterval(60);
+        options.setMaxInflight(10);
+
         factory.setConnectionOptions(options);
 
         return factory;
