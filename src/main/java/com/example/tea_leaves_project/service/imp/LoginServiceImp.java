@@ -3,7 +3,7 @@ package com.example.tea_leaves_project.service.imp;
 import com.example.tea_leaves_project.exception.ApiException;
 import com.example.tea_leaves_project.entity.Roles;
 import com.example.tea_leaves_project.entity.Users;
-import com.example.tea_leaves_project.Payload.Request.SignupRequest;
+import com.example.tea_leaves_project.payload.Request.SignupRequest;
 import com.example.tea_leaves_project.repository.RolesRepository;
 import com.example.tea_leaves_project.repository.UserRepository;
 import com.example.tea_leaves_project.service.LoginService;

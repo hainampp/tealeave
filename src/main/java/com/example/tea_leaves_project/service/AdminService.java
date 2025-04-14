@@ -1,7 +1,7 @@
 package com.example.tea_leaves_project.service;
 
 import com.example.tea_leaves_project.dto.UserDto;
-import com.example.tea_leaves_project.Payload.ResponseData;
+import com.example.tea_leaves_project.payload.ResponseData;
 
 import java.util.List;
 

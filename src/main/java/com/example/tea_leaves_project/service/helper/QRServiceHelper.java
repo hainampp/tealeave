@@ -6,24 +6,19 @@ import com.example.tea_leaves_project.entity.Package;
 import com.example.tea_leaves_project.entity.TypeTea;
 import com.example.tea_leaves_project.entity.Users;
 import com.example.tea_leaves_project.entity.Warehouse;
-import com.example.tea_leaves_project.Payload.Request.PackageRequest;
-import com.example.tea_leaves_project.Payload.Response.QrResponse;
+import com.example.tea_leaves_project.payload.Request.PackageRequest;
+import com.example.tea_leaves_project.payload.Response.QrResponse;
 import com.example.tea_leaves_project.repository.PackageRepository;
 import com.example.tea_leaves_project.repository.TypeTeaRespository;
 import com.example.tea_leaves_project.repository.UserRepository;
 import com.example.tea_leaves_project.repository.WarehouseRepository;
-import com.example.tea_leaves_project.service.imp.WarehouseServiceImp;
 import com.example.tea_leaves_project.constant.QRTag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Slf4j
 @Service

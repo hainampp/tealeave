@@ -1,4 +1,4 @@
-package com.example.tea_leaves_project.Payload.Response;
+package com.example.tea_leaves_project.payload.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

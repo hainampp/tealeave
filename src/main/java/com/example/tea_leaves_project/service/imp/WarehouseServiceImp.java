@@ -1,6 +1,6 @@
 package com.example.tea_leaves_project.service.imp;
 
-import com.example.tea_leaves_project.Payload.Response.QrResponse;
+import com.example.tea_leaves_project.payload.Response.QrResponse;
 import com.example.tea_leaves_project.dto.PackageDto;
 import com.example.tea_leaves_project.dto.QRScannerData;
 import com.example.tea_leaves_project.dto.WarehouseDto;
@@ -8,8 +8,8 @@ import com.example.tea_leaves_project.dto.WarehousePackageDto;
 import com.example.tea_leaves_project.exception.ApiException;
 import com.example.tea_leaves_project.entity.Package;
 import com.example.tea_leaves_project.entity.Warehouse;
-import com.example.tea_leaves_project.Payload.Request.WeighRequest;
-import com.example.tea_leaves_project.Payload.ResponseData;
+import com.example.tea_leaves_project.payload.Request.WeighRequest;
+import com.example.tea_leaves_project.payload.ResponseData;
 import com.example.tea_leaves_project.repository.PackageRepository;
 import com.example.tea_leaves_project.repository.WarehouseRepository;
 import com.example.tea_leaves_project.service.WarehouseService;

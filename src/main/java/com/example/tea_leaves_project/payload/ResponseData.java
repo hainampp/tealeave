@@ -1,4 +1,4 @@
-package com.example.tea_leaves_project.Payload;
+package com.example.tea_leaves_project.payload;
 
 import com.example.tea_leaves_project.exception.CodeResponse;
 import lombok.*;

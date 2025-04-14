@@ -5,7 +5,7 @@ import com.example.tea_leaves_project.dto.UserInfoDto;
 import com.example.tea_leaves_project.exception.ApiException;
 import com.example.tea_leaves_project.entity.Package;
 import com.example.tea_leaves_project.entity.Users;
-import com.example.tea_leaves_project.Payload.ResponseData;
+import com.example.tea_leaves_project.payload.ResponseData;
 import com.example.tea_leaves_project.repository.PackageRepository;
 import com.example.tea_leaves_project.repository.TypeTeaRespository;
 import com.example.tea_leaves_project.repository.UserRepository;

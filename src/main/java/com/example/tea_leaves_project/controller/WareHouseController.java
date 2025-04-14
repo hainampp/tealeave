@@ -2,11 +2,8 @@ package com.example.tea_leaves_project.controller;
 
 import com.example.tea_leaves_project.dto.QRScannerData;
 import com.example.tea_leaves_project.exception.ApiException;
-import com.example.tea_leaves_project.Payload.Request.WeighRequest;
-import com.example.tea_leaves_project.Payload.Response.QrResponse;
-import com.example.tea_leaves_project.service.UserService;
+import com.example.tea_leaves_project.payload.Request.WeighRequest;
 import com.example.tea_leaves_project.service.WarehouseService;
-import com.example.tea_leaves_project.service.helper.QRServiceHelper;
 import com.example.tea_leaves_project.util.JwtUtilHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

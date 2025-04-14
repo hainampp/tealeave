@@ -1,4 +1,4 @@
-package com.example.tea_leaves_project.Payload.Request;
+package com.example.tea_leaves_project.payload.Request;
 
 import lombok.Getter;
 import lombok.Setter;

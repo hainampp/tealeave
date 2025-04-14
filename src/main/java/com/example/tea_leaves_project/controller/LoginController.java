@@ -1,8 +1,7 @@
 package com.example.tea_leaves_project.controller;
 
-import com.example.tea_leaves_project.Payload.Request.SigninRequest;
-import com.example.tea_leaves_project.Payload.Request.SignupRequest;
-import com.example.tea_leaves_project.Payload.ResponseData;
+import com.example.tea_leaves_project.payload.Request.SignupRequest;
+import com.example.tea_leaves_project.payload.ResponseData;
 import com.example.tea_leaves_project.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

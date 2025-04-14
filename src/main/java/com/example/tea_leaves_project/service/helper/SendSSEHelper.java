@@ -1,6 +1,6 @@
 package com.example.tea_leaves_project.service.helper;
 
-import com.example.tea_leaves_project.Payload.Request.ScanEmitter;
+import com.example.tea_leaves_project.payload.Request.ScanEmitter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
