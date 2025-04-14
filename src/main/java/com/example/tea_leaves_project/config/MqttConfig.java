@@ -1,18 +1,14 @@
 package com.example.tea_leaves_project.config;
 
-import com.example.tea_leaves_project.Payload.Request.QRScannerData;
-import com.example.tea_leaves_project.Payload.Response.QrResponse;
-import com.example.tea_leaves_project.Service.helper.QRServiceHelper;
-import com.example.tea_leaves_project.Service.helper.SendSSEHelper;
-import com.example.tea_leaves_project.Service.imp.WarehouseServiceImp;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.tea_leaves_project.dto.QRScannerData;
+import com.example.tea_leaves_project.entity.Warehouse;
+import com.example.tea_leaves_project.service.WarehouseService;
+import com.example.tea_leaves_project.util.MapperUtil;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.paho.client.mqttv3.IMqttClient;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -21,37 +17,34 @@ import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
+import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.integration.mqtt.support.MqttHeaders;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.MessagingException;
-import com.example.tea_leaves_project.Util.*;
-@Slf4j
-@Configuration
-public class MqttConfig {
+import org.springframework.scheduling.annotation.Scheduled;
 
-//    @Bean
-//    public IMqttClient mqttClient() throws MqttException {
-//        final String mqttServer = "7e44c054e3384872bc6b019a4185eb18.s1.eu.hivemq.cloud";
-//        IMqttClient instance = new MqttClient(mqttServer, "tealeaves-mqtt");
-//        MqttConnectOptions options = new MqttConnectOptions();
-//        options.setAutomaticReconnect(true);
-//        options.setCleanSession(true);
-//        options.setConnectionTimeout(10);
-//
-//        if (!instance.isConnected()) {
-//            instance.connect(options);
-//        }
-//        return instance;
-//    }
+@Slf4j
+@Data
+@Configuration
+@ConfigurationProperties(prefix = "mqtt")
+public class MqttConfig {
     @Autowired
-    QRServiceHelper qrServiceHelper;
-    @Autowired
-    WarehouseServiceImp warehouseService;
+    WarehouseService warehouseService;
+    private String broker;
+    private String username;
+    private String password;
+    private boolean cleanSession;
+    private String clientId;
+    private String qrTopic;
+
     @Bean
     public MessageChannel mqttInputChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel mqttOutboundChannel() {
         return new DirectChannel();
     }
 
@@ -59,37 +52,38 @@ public class MqttConfig {
     public MqttPahoClientFactory mqttPahoClientFactory(){
         DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
         MqttConnectOptions options = new MqttConnectOptions();
-        options.setCleanSession(true);
-        options.setServerURIs(new String[]{"ssl://7e44c054e3384872bc6b019a4185eb18.s1.eu.hivemq.cloud:8883"});
-        options.setUserName("iec-local");
-        options.setPassword("Aa12345678".toCharArray());
-        // Cấu hình tự động kết nối lại
-        options.setAutomaticReconnect(true);
-        options.setCleanSession(false);
+        options.setCleanSession(cleanSession);
         options.setConnectionTimeout(30);
         options.setKeepAliveInterval(60);
-        options.setMaxInflight(10);
-
+        options.setAutomaticReconnect(true);
+        options.setServerURIs(new String[]{broker});
+        options.setUserName(username);
+        options.setPassword(password.toCharArray());
         factory.setConnectionOptions(options);
-
         return factory;
     }
 
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(
-                        "myclient",
-                        mqttPahoClientFactory(),
-                        "esp32/data",
-                            "esp32_1/data");
-        adapter.setCompletionTimeout(5000);
+                new MqttPahoMessageDrivenChannelAdapter(clientId, mqttPahoClientFactory(), qrTopic);
+        adapter.setCompletionTimeout(20000);
         adapter.setConverter(new DefaultPahoMessageConverter());
-        adapter.setQos(0);
+        adapter.setQos(1);
         adapter.setOutputChannel(mqttInputChannel());
         return adapter;
     }
 
+    @Bean
+    @ServiceActivator(inputChannel = "mqttOutboundChannel")
+    public MessageHandler outbound() {
+        MqttPahoMessageHandler messageHandler =
+                new MqttPahoMessageHandler(clientId + "_outbound", mqttPahoClientFactory());
+        messageHandler.setAsync(true);
+        messageHandler.setDefaultTopic(qrTopic);
+        messageHandler.setDefaultQos(1);
+        return messageHandler;
+    }
 
     // hàm subscribe topic qrcode từ mqtt
     @Bean
@@ -103,4 +97,5 @@ public class MqttConfig {
             warehouseService.scanQrCode(topic,data);
         };
     }
+
 }

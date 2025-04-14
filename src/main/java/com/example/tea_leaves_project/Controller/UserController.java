@@ -1,22 +1,15 @@
-package com.example.tea_leaves_project.Controller;
+package com.example.tea_leaves_project.controller;
 
-import com.example.tea_leaves_project.Exception.ApiException;
+import com.example.tea_leaves_project.exception.ApiException;
 import com.example.tea_leaves_project.Payload.Request.PackageRequest;
-import com.example.tea_leaves_project.Service.UserService;
-import com.example.tea_leaves_project.Service.helper.QRServiceHelper;
-import com.example.tea_leaves_project.Util.JwtUtilHelper;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Encoders;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.tea_leaves_project.service.UserService;
+import com.example.tea_leaves_project.service.helper.QRServiceHelper;
+import com.example.tea_leaves_project.util.JwtUtilHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 @RestController
 @RequestMapping("/user")

@@ -1,4 +1,4 @@
-package com.example.tea_leaves_project.Controller;
+package com.example.tea_leaves_project.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

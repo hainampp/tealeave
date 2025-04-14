@@ -1,24 +1,18 @@
-package com.example.tea_leaves_project.Controller;
+package com.example.tea_leaves_project.controller;
 
-import com.example.tea_leaves_project.DTO.WarehouseDto;
-import com.example.tea_leaves_project.Exception.ApiException;
-import com.example.tea_leaves_project.Model.entity.Warehouse;
-import com.example.tea_leaves_project.Payload.Request.QRScannerData;
+import com.example.tea_leaves_project.dto.QRScannerData;
+import com.example.tea_leaves_project.exception.ApiException;
 import com.example.tea_leaves_project.Payload.Request.WeighRequest;
 import com.example.tea_leaves_project.Payload.Response.QrResponse;
-import com.example.tea_leaves_project.Service.UserService;
-import com.example.tea_leaves_project.Service.WarehouseService;
-import com.example.tea_leaves_project.Service.helper.QRServiceHelper;
-import com.example.tea_leaves_project.Util.JwtUtilHelper;
+import com.example.tea_leaves_project.service.UserService;
+import com.example.tea_leaves_project.service.WarehouseService;
+import com.example.tea_leaves_project.service.helper.QRServiceHelper;
+import com.example.tea_leaves_project.util.JwtUtilHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/warehouse")
@@ -26,11 +20,7 @@ public class WareHouseController {
     @Autowired
     JwtUtilHelper jwtUtil;
     @Autowired
-    UserService userService;
-    @Autowired
     WarehouseService warehouseService;
-    @Autowired
-    QRServiceHelper qrServiceHelper;
     private String getTokenFromHeader(WebRequest request) {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
@@ -70,5 +60,6 @@ public class WareHouseController {
     public  ResponseEntity<?> scanPackage(@RequestParam String scancode,@RequestBody QRScannerData data) {
         return new ResponseEntity<>(warehouseService.scanQrCode(scancode,data), HttpStatus.OK);
     }
+
 
 }

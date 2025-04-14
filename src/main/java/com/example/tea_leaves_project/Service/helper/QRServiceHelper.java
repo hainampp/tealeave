@@ -1,19 +1,18 @@
-package com.example.tea_leaves_project.Service.helper;
+package com.example.tea_leaves_project.service.helper;
 
-import com.example.tea_leaves_project.DTO.QRPackage;
-import com.example.tea_leaves_project.Exception.ApiException;
-import com.example.tea_leaves_project.Exception.CodeResponse;
-import com.example.tea_leaves_project.Model.entity.Package;
-import com.example.tea_leaves_project.Model.entity.TypeTea;
-import com.example.tea_leaves_project.Model.entity.Users;
-import com.example.tea_leaves_project.Model.entity.Warehouse;
+import com.example.tea_leaves_project.exception.ApiException;
+import com.example.tea_leaves_project.exception.CodeResponse;
+import com.example.tea_leaves_project.entity.Package;
+import com.example.tea_leaves_project.entity.TypeTea;
+import com.example.tea_leaves_project.entity.Users;
+import com.example.tea_leaves_project.entity.Warehouse;
 import com.example.tea_leaves_project.Payload.Request.PackageRequest;
 import com.example.tea_leaves_project.Payload.Response.QrResponse;
-import com.example.tea_leaves_project.Responsitory.PackageRepository;
-import com.example.tea_leaves_project.Responsitory.TypeTeaRespository;
-import com.example.tea_leaves_project.Responsitory.UserRepository;
-import com.example.tea_leaves_project.Responsitory.WarehouseRepository;
-import com.example.tea_leaves_project.Service.imp.WarehouseServiceImp;
+import com.example.tea_leaves_project.repository.PackageRepository;
+import com.example.tea_leaves_project.repository.TypeTeaRespository;
+import com.example.tea_leaves_project.repository.UserRepository;
+import com.example.tea_leaves_project.repository.WarehouseRepository;
+import com.example.tea_leaves_project.service.imp.WarehouseServiceImp;
 import com.example.tea_leaves_project.constant.QRTag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,46 +96,113 @@ public class QRServiceHelper {
     }
 
     // call: unpack(qrCode, new QrResponse())
-    public QrResponse unpack(String qrCode, QrResponse qrResponse){
-        log.info("Unpacking QR Code: {}", qrCode);
+    public QrResponse unpack(String qrCode, QrResponse qrResponse) {
+        try {
+            log.info("Unpacking QR Code: {}", qrCode);
 
-        // bao gồm header là 2 số định danh QRTag + 2 số chứa độ dài của giá trị
-        if(qrCode.length() > 4){
+            // Kiểm tra null hoặc rỗng
+            if (qrCode == null || qrCode.isEmpty()) {
+                log.error("QR Code is null or empty");
+                qrResponse.setMessage("QR Code không hợp lệ: rỗng hoặc null");
+                return qrResponse;
+            }
+
+            // Kiểm tra độ dài QR code
+            if (qrCode.length() < 4) {
+                log.error("QR Code too short: {}", qrCode);
+                qrResponse.setMessage("QR Code không hợp lệ: độ dài không đủ");
+                return qrResponse;
+            }
+
+            // Trích xuất header và kiểm tra định dạng
             String header = qrCode.substring(0, 4);
             String tag = header.substring(0, 2);
             String size = header.substring(2);
-            String body = qrCode.substring(4, 4 + Integer.parseInt(size));
 
-            switch (tag){
-                case QRTag.PACKAGE_ID:
-                    qrResponse.setPackageid(Long.parseLong(body));
-                    break;
-                case QRTag.USER_ID:
-                    qrResponse.setUserid(Long.parseLong(body));
-                    break;
-                case QRTag.WAREHOUSE_ID:
-                    qrResponse.setWarehouseid(Long.parseLong(body));
-                    break;
-                case QRTag.TEA_CODE:
-                    qrResponse.setTeacode(body);
-                    break;
-                case QRTag.CREATED_TIME:
-                    try {
-                        long time=Long.parseLong(body);
-                        System.out.println(time);
-                        Timestamp timestamp = new Timestamp(time);
-                        qrResponse.setCreatetime(timestamp);
-                        System.out.println(timestamp);
-                    } catch (Exception ex) {
-                        log.error("Parse created date exception: ", ex);
-                    }
-                    break;
-                default:
-                    break;
+            // Kiểm tra size có phải là số nguyên không
+            int sizeValue;
+            try {
+                sizeValue = Integer.parseInt(size);
+            } catch (NumberFormatException e) {
+                log.error("Invalid size format in QR code: {}", size);
+                qrResponse.setMessage("QR Code không hợp lệ: định dạng kích thước không đúng");
+                return qrResponse;
             }
-            String subData = qrCode.substring(body.length() + 4);
-            unpack(subData, qrResponse);
+
+            // Kiểm tra độ dài QR code có đủ chứa data không
+            if (qrCode.length() < 4 + sizeValue) {
+                log.error("QR Code data section too short. Expected {} bytes, got {}",
+                        sizeValue, qrCode.length() - 4);
+                qrResponse.setMessage("QR Code không hợp lệ: phần dữ liệu không đủ độ dài");
+                return qrResponse;
+            }
+
+            // Trích xuất phần body
+            String body = qrCode.substring(4, 4 + sizeValue);
+
+            // Xử lý dựa trên tag
+            try {
+                switch (tag) {
+                    case QRTag.PACKAGE_ID:
+                        try {
+                            qrResponse.setPackageid(Long.parseLong(body));
+                        } catch (NumberFormatException e) {
+                            log.error("Invalid package ID format: {}", body);
+                            qrResponse.setMessage("Định dạng ID gói hàng không hợp lệ");
+                        }
+                        break;
+                    case QRTag.USER_ID:
+                        try {
+                            qrResponse.setUserid(Long.parseLong(body));
+                        } catch (NumberFormatException e) {
+                            log.error("Invalid user ID format: {}", body);
+                            qrResponse.setMessage("Định dạng ID người dùng không hợp lệ");
+                        }
+                        break;
+                    case QRTag.WAREHOUSE_ID:
+                        try {
+                            qrResponse.setWarehouseid(Long.parseLong(body));
+                        } catch (NumberFormatException e) {
+                            log.error("Invalid warehouse ID format: {}", body);
+                            qrResponse.setMessage("Định dạng ID kho hàng không hợp lệ");
+                        }
+                        break;
+                    case QRTag.TEA_CODE:
+                        qrResponse.setTeacode(body);
+                        break;
+                    case QRTag.CREATED_TIME:
+                        try {
+                            long time = Long.parseLong(body);
+                            Timestamp timestamp = new Timestamp(time);
+                            qrResponse.setCreatetime(timestamp);
+                        } catch (Exception ex) {
+                            log.error("Parse created date exception: ", ex);
+                            qrResponse.setMessage("Lỗi khi phân tích thời gian tạo");
+                        }
+                        break;
+                    default:
+                        log.warn("Unknown tag: {}", tag);
+                        break;
+                }
+
+                // Xử lý phần QR code còn lại (đệ quy)
+                if (4 + sizeValue < qrCode.length()) {
+                    String subData = qrCode.substring(4 + sizeValue);
+                    unpack(subData, qrResponse);
+                }
+            } catch (Exception e) {
+                // Bắt tất cả các ngoại lệ khác có thể xảy ra trong quá trình xử lý
+                log.error("Error processing QR code data: {}", e.getMessage(), e);
+                if (qrResponse.getMessage() == null) {
+                    qrResponse.setMessage("Lỗi khi xử lý QR Code");
+                }
+            }
+        } catch (Exception e) {
+            // Bắt tất cả các ngoại lệ có thể xảy ra
+            log.error("Unexpected error unpacking QR code: {}", e.getMessage(), e);
+            qrResponse.setMessage("Lỗi không xác định khi xử lý QR Code");
         }
+
         return qrResponse;
     }
 

@@ -1,4 +1,4 @@
-package com.example.tea_leaves_project.Security;
+package com.example.tea_leaves_project.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +38,8 @@ public class CustomFilterSecurtity {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login/**",
-                                "/warehouse/**"
+                                "/warehouse/**",
+                                "/**"
                                 ).permitAll()
 //                        .requestMatchers("/warehouse/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

@@ -1,8 +1,6 @@
-package com.example.tea_leaves_project.Service;
+package com.example.tea_leaves_project.service;
 
-import com.example.tea_leaves_project.DTO.TypeTeaDto;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import com.example.tea_leaves_project.dto.TypeTeaDto;
 
 import java.util.List;
 

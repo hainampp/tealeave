@@ -1,19 +1,16 @@
-package com.example.tea_leaves_project.Controller;
+package com.example.tea_leaves_project.controller;
 
-import com.example.tea_leaves_project.Exception.ApiException;
-import com.example.tea_leaves_project.Model.entity.Users;
-import com.example.tea_leaves_project.Responsitory.UserRepository;
-import com.example.tea_leaves_project.Service.helper.SendSSEHelper;
-import com.example.tea_leaves_project.Util.JwtUtilHelper;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.tea_leaves_project.exception.ApiException;
+import com.example.tea_leaves_project.entity.Users;
+import com.example.tea_leaves_project.repository.UserRepository;
+import com.example.tea_leaves_project.service.helper.SendSSEHelper;
+import com.example.tea_leaves_project.util.JwtUtilHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

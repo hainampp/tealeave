@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 @AllArgsConstructor
 @Data
 public class ScanEmitter {

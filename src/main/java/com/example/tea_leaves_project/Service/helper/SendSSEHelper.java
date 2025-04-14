@@ -1,8 +1,7 @@
-package com.example.tea_leaves_project.Service.helper;
+package com.example.tea_leaves_project.service.helper;
 
 import com.example.tea_leaves_project.Payload.Request.ScanEmitter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class SendSSEHelper {
     }
 
     // tìm kiếm emitters của user
-    public void notifyQrCodeScanned(Long userid,String username) {
+    public void notifyQrCodeScanned(long userid,String username) {
         for (ScanEmitter scanEmitter : emitters) {
             if (scanEmitter.getUserid()==userid) {
                 try {
@@ -50,7 +49,7 @@ public class SendSSEHelper {
             }
         }
     }
-    public void notifyWeigh(Long userid,String username,double weight) {
+    public void notifyWeigh(long userid,String username,double weight) {
         for (ScanEmitter scanEmitter : emitters) {
             if (scanEmitter.getUserid()==userid) {
                 try {

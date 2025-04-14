@@ -1,8 +1,8 @@
-package com.example.tea_leaves_project.Security;
+package com.example.tea_leaves_project.security;
 
-import com.example.tea_leaves_project.Model.entity.Users;
-import com.example.tea_leaves_project.Responsitory.UserRepository;
-import com.example.tea_leaves_project.Util.JwtUtilHelper;
+import com.example.tea_leaves_project.entity.Users;
+import com.example.tea_leaves_project.repository.UserRepository;
+import com.example.tea_leaves_project.util.JwtUtilHelper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

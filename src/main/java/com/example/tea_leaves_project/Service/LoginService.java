@@ -1,4 +1,4 @@
-package com.example.tea_leaves_project.Service;
+package com.example.tea_leaves_project.service;
 
 import com.example.tea_leaves_project.Payload.Request.SignupRequest;
 
