@@ -66,7 +66,7 @@ public class MqttConfig {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(clientId, mqttPahoClientFactory(), qrTopic);
+                new MqttPahoMessageDrivenChannelAdapter(clientId, mqttPahoClientFactory(), "esp32/data", "esp32_1/data");
         adapter.setCompletionTimeout(20000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);

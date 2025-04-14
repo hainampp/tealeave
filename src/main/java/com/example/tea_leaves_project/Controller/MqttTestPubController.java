@@ -27,7 +27,7 @@ public class MqttTestPubController {
                 .build()
         );
         Message<String> message = MessageBuilder.withPayload(jsonData)
-                .setHeader("mqtt_topic", "esp32/data")
+                .setHeader("mqtt_topic", "esp32_1/data")
                 .setHeader("mqtt_qos", 1)
                 .build();
         return mqttOutboundChannel.send(message);
