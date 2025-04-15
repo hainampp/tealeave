@@ -87,6 +87,8 @@ public class WarehouseServiceImp implements WarehouseService {
                     .unit(p.getUtil())
                     .status(p.getStatus())
                     .teacode(p.getTypetea().getTeacode())
+                    .humidity(p.getHumidity())
+                    .temperature(p.getTemperature())
                     .build();
             packageDtoList.add(packageDto);
 

@@ -19,5 +19,7 @@ public class PackageDto {
     private String unit;
     private String status;
     private String teacode;
+    private double humidity;
+    private double temperature;
     private String qrcode;
 }

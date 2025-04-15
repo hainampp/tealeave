@@ -73,6 +73,8 @@ public class UserServiceImp implements UserService {
                     .unit(p.getUtil())
                     .status(p.getStatus())
                     .qrcode(p.getQrcode())
+                    .humidity(p.getHumidity())
+                    .temperature(p.getTemperature())
                     .build();
             packageDtoList.add(packageDto);
         }
